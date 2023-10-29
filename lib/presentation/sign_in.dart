@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:phone_auth/logic/blocs/internet_bloc/internet_bloc.dart';
+import 'package:phone_auth/logic/blocs/internet_bloc/internet_state.dart';
 import 'package:phone_auth/logic/cubits/auth_cubit/auth_cubit.dart';
 import 'package:phone_auth/logic/cubits/auth_cubit/auth_state.dart';
 import 'package:phone_auth/presentation/verify_phone.dart';
@@ -38,11 +40,12 @@ class SignInScreen extends StatelessWidget {
             Center(
               child: BlocConsumer<AuthCubit, AuthState>(
                   listener: (context, state) {
-                if (state is AuthCodeSentState) {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => VerifyPhoneScreen()));
-                }
-              }, builder: (context, state) {
+                    if (state is AuthCodeSentState) {
+                      Navigator.push(context,
+                          MaterialPageRoute(
+                              builder: (_) => VerifyPhoneScreen()));
+                    }
+                  }, builder: (context, state) {
                 if (state is AuthLoadingState) {
                   return CircularProgressIndicator();
                 }
@@ -61,7 +64,16 @@ class SignInScreen extends StatelessWidget {
                   ),
                 );
               }),
-            )
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            BlocBuilder<InternetBloc, InternetState>(
+              builder: (context, state) {
+                return Text("Phone number");
+              },
+            ),
+
           ],
         ),
       ),
